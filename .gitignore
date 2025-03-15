@@ -1,1 +1,4 @@
+*.db
 appointments.db
+*.sqlite
+*.sqlite3
