@@ -16,6 +16,8 @@ CLINIC_LOCATIONS = [
     "Dean Street Sexual Health Clinic, W1D 6AQ",
     "Archway Sexual Health Clinic, N19 5NF"
 ]
+
+
 CONSULTATION_MODES = ["Telephone", "Face-to-Face"]
 #openai_model = "gpt-4o-mini"
 gemini_model = "gemini-2.0-flash"
@@ -39,6 +41,7 @@ def init_db():
                  clinic TEXT,
                  time_preference TEXT,
                  mode_of_consultation TEXT,
+                 phone_number TEXT,
                  symptoms_summary TEXT,
                  severity_classification TEXT
                  )''')
@@ -550,6 +553,13 @@ if st.session_state.current_step == 11:
             del st.session_state.classification_response
         st.rerun()
 
+TRANSLATIONS["English"]["phone_number"] = "Phone Number"
+TRANSLATIONS["English"]["phone_placeholder"] = "Enter your phone number"
+TRANSLATIONS["French"]["phone_number"] = "Numéro de Téléphone"
+TRANSLATIONS["French"]["phone_placeholder"] = "Entrez votre numéro de téléphone"
+
+
+
 # Step 12: Additional Booking Details
 if st.session_state.current_step == 12:
     st.header(t("booking_details"))
@@ -557,12 +567,19 @@ if st.session_state.current_step == 12:
     clinic = st.selectbox(t("clinic_location"), CLINIC_LOCATIONS)
     time_preference = st.selectbox(t("time_preference"), ["Morning", "Day", "Evening"])
     mode_of_consultation = st.selectbox(t("consultation_mode"), CONSULTATION_MODES)
+    
+    # Add phone number field here
+    phone_number = st.text_input(t("phone_number"), placeholder=t("phone_placeholder"))
+    
     if st.button(t("submit")):
         st.session_state.clinic = clinic
         st.session_state.time_preference = time_preference
         st.session_state.mode_of_consultation = mode_of_consultation
+        st.session_state.phone_number = phone_number  # Store phone number
         st.session_state.current_step = 13
         st.rerun()
+
+
 
 # Step 13: Appointment Slot Selection & Booking
 if st.session_state.current_step == 13:
@@ -585,13 +602,14 @@ if st.session_state.current_step == 13:
         f"{t('allergies_label')}: {st.session_state.responses.get('allergies')}\n"
         f"{t('investigations_label')}: {st.session_state.responses.get('investigations')}\n"
     )
-
-    c.execute('''INSERT INTO appointments (name, symptoms_summary, severity_classification, priority)
-                 VALUES (?, ?, ?, ?)''',
+    
+    c.execute('''INSERT INTO appointments (name, symptoms_summary, severity_classification, priority, phone_number)
+                 VALUES (?, ?, ?, ?, ?)''',
               (st.session_state.responses.get('name'),
                symptoms_summary.strip(),
                st.session_state.triage_severity,
-               st.session_state.priority))
+               st.session_state.priority,
+               st.session_state.phone_number))  # Add phone number here
     conn.commit()
 
     st.write(t("choose_slot"))
