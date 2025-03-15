@@ -12,9 +12,9 @@ from openai import OpenAI
 #############################
 
 CLINIC_LOCATIONS = [
-    "Riverside Clinic, SE1 2RT",
-    "Highgate Health Center, N6 5HG",
-    "Greenwich Medical Hub, SE10 9LS"
+    "Mortimer Market Sexual Health Centre, WC1E 6JB",
+    "Dean Street Sexual Health Clinic, W1D 6AQ",
+    "Archway Sexual Health Clinic, N19 5NF"
 ]
 CONSULTATION_MODES = ["Telephone", "Face-to-Face"]
 #openai_model = "gpt-4o-mini"
