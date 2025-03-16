@@ -304,6 +304,12 @@ st.title(t("page_title"))
 st.warning(t("warning"))
 
 
+# Function to calculate age from date of birth
+def calculate_age(dob):
+    today = datetime.today()
+    return today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+
+
 # -----------------------------
 # MULTI-STEP FORM LOGIC
 # -----------------------------
@@ -336,6 +342,7 @@ elif st.session_state.current_step == 3:
     )
     if st.button(t("next")):
         st.session_state.responses["date_of_birth"] = dob.strftime("%d/%m/%Y")
+        st.session_state.responses["age"] = calculate_age(dob)
         st.session_state.current_step = 4
         st.rerun()
 
@@ -444,6 +451,7 @@ elif st.session_state.current_step == 13:
     summary_items = [
         f"{t('name_label')}: {st.session_state.responses.get('name')}",
         f"{t('dob_label')}: {st.session_state.responses.get('date_of_birth')}",
+        f"Age: {st.session_state.responses.get('age')}",
         f"{t('has_symptoms_label')}: {st.session_state.responses.get('has_symptoms')}"
     ]
     
@@ -488,6 +496,7 @@ elif st.session_state.current_step == 14:
     summary_items = [
         f"Name: {st.session_state.responses.get('name')}",
         f"Date of Birth: {st.session_state.responses.get('date_of_birth')}",
+        f"Age: {st.session_state.responses.get('age')}",
         f"Has Symptoms: {st.session_state.responses.get('has_symptoms')}"
     ]
     
