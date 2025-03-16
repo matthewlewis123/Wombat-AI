@@ -12,9 +12,9 @@ from datetime import datetime
 #############################
 
 CLINIC_LOCATIONS = [
-    "Mortimer Market Sexual Health Centre, WC1E 6JB",
-    "Dean Street Sexual Health Clinic, W1D 6AQ",
-    "Archway Sexual Health Clinic, N19 5NF"
+    "Jefferiss Wing Sexual Health Clinic, W2 1NY",
+    "56 Dean Street, W1D 6AQ",
+    "John Hunter Clinic, SW10 9NH"
 ]
 
 CONSULTATION_MODES = ["Face-to-Face"]
@@ -110,7 +110,7 @@ TRANSLATIONS = {
         "has_symptoms": "Do you have symptoms?",
         "symptoms_desc": "What are your symptoms?",
         "symptoms_duration": "How long have you had your symptoms?",
-        "last_period": "How many days since the first day of your last menstrual period?",
+        "last_period": "When was your last menstrual period?",
         "medical_history": "What medical conditions are you diagnosed to have? Are you taking any medications? Do you have any allergies?",
         "smoking": "Do you smoke?",
         "drugs": "Do you take recreational drugs?",
@@ -238,6 +238,24 @@ TRANSLATIONS = {
         "needs_translator": "Avez-vous besoin d'un traducteur pour votre rendez-vous?",
         "translator_language": "Pour quelle langue avez-vous besoin d'une traduction?",
         
+    },
+    "Español": {
+        # Add Spanish translations here
+    },
+    "Deutsch": {
+        # Add German translations here
+    },
+    "العربية": {
+        # Add Arabic translations here
+    },
+    "中文": {
+        # Add Chinese translations here
+    },
+    "हिंदी": {
+        # Add Hindi translations here
+    },
+    "Português": {
+        # Add Portuguese translations here
     }
 }
 
@@ -295,7 +313,7 @@ st.sidebar.title(t("sidebar_title"))
 
 # Language selector
 language_selector = st.sidebar.selectbox(
-    "Language / Langue / Idioma / Sprache:",
+    "Language / Langue / Idioma / Sprache / لغة / 语言 / भाषा / Língua:",
     list(TRANSLATIONS.keys()),  # Use keys from TRANSLATIONS dictionary
     key="language_selector",
     on_change=lambda: setattr(st.session_state, "language", st.session_state.language_selector)
@@ -338,7 +356,9 @@ elif st.session_state.current_step == 3:
     dob = st.date_input(
         t("date_of_birth"), 
         help="Please select your date of birth",
-        format="DD/MM/YYYY"
+        format="DD/MM/YYYY",
+        min_value=datetime(1900, 1, 1),  # Allow dates from 1900 onwards
+        max_value=datetime.today()  # Allow dates up to today
     )
     if st.button(t("next")):
         st.session_state.responses["date_of_birth"] = dob.strftime("%d/%m/%Y")
